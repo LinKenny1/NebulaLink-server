@@ -11,6 +11,7 @@ class TestDisplayController(unittest.TestCase):
 
     def test_get_display_info(self):
         displays = self.controller.get_display_info()
+        print(displays)
         self.assertIsInstance(displays, list)
         self.assertTrue(len(displays) > 0)
         for display in displays:

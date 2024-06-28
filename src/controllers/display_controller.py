@@ -2,8 +2,8 @@
 
 import ctypes
 import ctypes.wintypes
-import win32api
-import win32con
+import win32api  # type: ignore
+import win32con  # type: ignore
 from typing import List, Dict, Any
 from src.utils import get_logger, DisplayControlError
 
