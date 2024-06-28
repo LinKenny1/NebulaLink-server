@@ -10,44 +10,48 @@ The project follows a modular structure to ensure maintainability and scalabilit
 
 ### Utils Package (`src/utils/`)
 
-The `utils` package contains utility modules that provide foundational functionality for the NebulaLink server. Currently implemented:
+- **Logging Configuration** (`logging_config.py`): Configures logging for the application.
+- **Error Handling** (`error_handling.py`): Provides custom exceptions and error handling utilities.
 
-1. **Logging Configuration** (`logging_config.py`):
+### Controllers (`src/controllers/`)
 
-   - `setup_logger()`: Configures a logger with console and optional file output.
-   - `get_logger()`: Retrieves a logger for different parts of the application.
+- **Power Controller** (`power_controller.py`): Manages system power operations (shutdown, restart, sleep, hibernate) and power plans.
+- **Display Controller** (`display_controller.py`): Handles display settings, including resolution and refresh rate changes.
+- **Program Controller** (`program_controller.py`): Manages running programs, including listing, pausing, and resuming.
 
-2. **Error Handling** (`error_handling.py`):
+### Server (`src/server/`)
 
-   - Custom exception classes (e.g., `NebulaLinkError`, `CommandError`, `PowerControlError`).
-   - `handle_error()`: Standardized error handling and logging.
-   - `log_and_raise()`: Logs an error before re-raising it.
+- **NebulaLink Server** (`nebulalink_server.py`): Core server implementation using WebSockets for real-time communication.
 
-3. **Package Initialization** (`__init__.py`):
-   - Exposes key functions and classes from the utils package for easy importing.
+### Main Application (`src/main.py`)
+
+- Entry point for the NebulaLink Server application.
+
+## Features
+
+- Remote power control (shutdown, restart, sleep, hibernate)
+- Power plan management
+- Display settings control (resolution, refresh rate)
+- Dummy display management
+- Running program management (list, pause, resume)
+- Real-time communication via WebSockets
 
 ## Usage
 
-To use the utility functions in your code:
+To start the NebulaLink Server:
 
-```python
-from utils import get_logger, CommandError, handle_error
-
-logger = get_logger(__name__)
-
-try:
-    # Your code here
-    raise CommandError("Example error")
-except CommandError as e:
-    error_details = handle_error(e)
-    logger.error(f"Command error occurred: {error_details}")
+```bash
+python src/main.py
 ```
 
 ## Next Steps
 
-- Implement core server functionality in `src/server/nebulalink_server.py`
-- Develop controller modules for power, display, and program management
-- Set up the main application entry point in `src/main.py`
+- Implement comprehensive error handling and input validation
+- Add authentication and security measures
+- Create a configuration system for server settings
+- Implement AI assistant for natural language command processing
+- Integrate with Moonlight for game streaming
+- Develop the Android client application
 
 ## Contributing
 
@@ -56,3 +60,7 @@ Please read [CONTRIBUTING.md](docs/CONTRIBUTING.md) for details on our code of c
 ## License
 
 This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. See the [LICENSE.md](LICENSE.md) file for details.
+
+## Disclaimer
+
+This software is in early development and may not be suitable for production use. Use at your own risk.
