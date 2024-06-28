@@ -41,7 +41,21 @@ The project follows a modular structure to ensure maintainability and scalabilit
 To start the NebulaLink Server:
 
 ```bash
-python src/main.py
+python src/run_server.py
+```
+
+## Running Tests
+
+1. Start the server in one terminal:
+
+```bash
+python src/run_server.py
+```
+
+2. In another terminal, run the tests:
+
+```bash
+pytest tests/
 ```
 
 ## Next Steps

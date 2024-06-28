@@ -2,9 +2,10 @@
 
 import subprocess
 from typing import List, Dict, Any
-from utils import get_logger, DisplayControlError
+from src.utils import get_logger, DisplayControlError
 
 logger = get_logger(__name__)
+
 
 class DisplayController:
     def __init__(self):
@@ -13,18 +14,35 @@ class DisplayController:
     def _get_displays(self) -> List[Dict[str, Any]]:
         # Placeholder for actual display detection
         return [
-            {"id": 0, "name": "Primary Display", "resolution": "1920x1080", "refresh_rate": 60},
-            {"id": 1, "name": "Secondary Display", "resolution": "2560x1440", "refresh_rate": 144}
+            {
+                "id": 0,
+                "name": "Primary Display",
+                "resolution": "1920x1080",
+                "refresh_rate": 60,
+            },
+            {
+                "id": 1,
+                "name": "Secondary Display",
+                "resolution": "2560x1440",
+                "refresh_rate": 144,
+            },
         ]
 
     def get_display_info(self) -> List[Dict[str, Any]]:
         return self.displays
 
-    def set_resolution(self, display_id: int, width: int, height: int) -> Dict[str, str]:
+    def set_resolution(
+        self, display_id: int, width: int, height: int
+    ) -> Dict[str, str]:
         try:
             # Placeholder for actual resolution change
-            logger.info(f"Setting resolution of display {display_id} to {width}x{height}")
-            return {"status": "success", "message": f"Resolution set to {width}x{height}"}
+            logger.info(
+                f"Setting resolution of display {display_id} to {width}x{height}"
+            )
+            return {
+                "status": "success",
+                "message": f"Resolution set to {width}x{height}",
+            }
         except Exception as e:
             logger.error(f"Failed to set resolution: {str(e)}")
             raise DisplayControlError(f"Failed to set resolution: {str(e)}")
@@ -55,6 +73,7 @@ class DisplayController:
         except Exception as e:
             logger.error(f"Failed to disable dummy display: {str(e)}")
             raise DisplayControlError(f"Failed to disable dummy display: {str(e)}")
+
 
 if __name__ == "__main__":
     controller = DisplayController()

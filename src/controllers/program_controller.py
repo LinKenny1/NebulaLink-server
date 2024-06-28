@@ -2,16 +2,17 @@
 
 import psutil
 from typing import List, Dict
-from utils import get_logger, ProgramControlError
+from src.utils import get_logger, ProgramControlError
 
 logger = get_logger(__name__)
+
 
 class ProgramController:
     def get_running_programs(self) -> List[Dict[str, str]]:
         try:
             programs = []
-            for proc in psutil.process_iter(['pid', 'name']):
-                programs.append({"pid": proc.info['pid'], "name": proc.info['name']})
+            for proc in psutil.process_iter(["pid", "name"]):
+                programs.append({"pid": proc.info["pid"], "name": proc.info["name"]})
             return programs
         except Exception as e:
             logger.error(f"Failed to get running programs: {str(e)}")
@@ -42,6 +43,7 @@ class ProgramController:
         except Exception as e:
             logger.error(f"Failed to resume program: {str(e)}")
             raise ProgramControlError(f"Failed to resume program: {str(e)}")
+
 
 if __name__ == "__main__":
     controller = ProgramController()

@@ -4,9 +4,10 @@ import subprocess
 import ctypes
 from typing import List, Dict
 
-from utils import get_logger, PowerControlError, handle_error
+from src.utils import get_logger, PowerControlError, handle_error
 
 logger = get_logger(__name__)
+
 
 class PowerController:
     def __init__(self):
@@ -80,12 +81,14 @@ class PowerController:
             List[Dict[str, str]]: A list of dictionaries containing power plan information.
         """
         try:
-            output = subprocess.check_output(["powercfg", "/list"], universal_newlines=True)
+            output = subprocess.check_output(
+                ["powercfg", "/list"], universal_newlines=True
+            )
             plans = []
-            for line in output.split('\n'):
+            for line in output.split("\n"):
                 if "GUID" in line:
-                    guid = line.split(':')[1].split('(')[0].strip()
-                    name = line.split('(')[1].split(')')[0].strip()
+                    guid = line.split(":")[1].split("(")[0].strip()
+                    name = line.split("(")[1].split(")")[0].strip()
                     plans.append({"guid": guid, "name": name})
             return plans
         except subprocess.CalledProcessError as e:
@@ -110,14 +113,23 @@ class PowerController:
 
         Returns:
             Dict[str, str]: A dictionary with the status of the operation.
+
+        Raises:
+            PowerControlError: If there's an error setting the power plan.
         """
         try:
             logger.info(f"Setting power plan to GUID: {guid}")
             subprocess.run(["powercfg", "/setactive", guid], check=True)
             return {"status": "success", "message": f"Power plan set to {guid}"}
         except subprocess.CalledProcessError as e:
-            logger.error(f"Failed to set power plan: {str(e)}")
-            raise PowerControlError(f"Failed to set power plan: {str(e)}")
+            error_msg = f"Failed to set power plan: {str(e)}"
+            logger.error(error_msg)
+            raise PowerControlError(error_msg)
+        except Exception as e:
+            error_msg = f"Unexpected error while setting power plan: {str(e)}"
+            logger.error(error_msg)
+            raise PowerControlError(error_msg)
+
 
 # Example usage
 if __name__ == "__main__":
@@ -125,7 +137,7 @@ if __name__ == "__main__":
     print("Available power plans:")
     for plan in controller.get_power_plans():
         print(f"Name: {plan['name']}, GUID: {plan['guid']}")
-    
+
     # Uncomment to test (be careful with shutdown/restart/sleep/hibernate commands!)
     # print(controller.set_power_plan("381b4222-f694-41f0-9685-ff5bb260df2e"))  # Balanced plan GUID
     # print(controller.sleep())
